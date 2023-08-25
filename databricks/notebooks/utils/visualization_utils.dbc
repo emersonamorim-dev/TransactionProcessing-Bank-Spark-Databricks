@@ -1,0 +1,29 @@
+import matplotlib.pyplot as plt
+from pyspark.sql import DataFrame
+
+# Função para plotar distribuição de uma coluna
+def plot_distribution(df: DataFrame, column_name: str, bins=30):
+    data = df.select(column_name).collect()
+    plt.hist(data, bins=bins)
+    plt.title(f"Distribuição de {column_name}")
+    plt.xlabel(column_name)
+    plt.ylabel("Frequência")
+    plt.show()
+
+# Função para plotar contagem de categorias de uma coluna
+def plot_category_counts(df: DataFrame, column_name: str):
+    category_counts = df.groupBy(column_name).count().toPandas()
+    plt.bar(category_counts[column_name], category_counts["count"])
+    plt.title(f"Distribuição de {column_name}")
+    plt.xlabel(column_name)
+    plt.ylabel("Contagem")
+    plt.show()
+
+# Função para plotar série temporal de uma coluna
+def plot_timeseries(df: DataFrame, time_column: str, value_column: str):
+    timeseries_data = df.sort(time_column).toPandas()
+    plt.plot(timeseries_data[time_column], timeseries_data[value_column])
+    plt.title(f"{value_column} ao Longo do Tempo")
+    plt.xlabel(time_column)
+    plt.ylabel(value_column)
+    plt.show()

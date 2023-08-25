@@ -1,0 +1,40 @@
+import pyspark.sql.functions as F
+import matplotlib.pyplot as plt
+
+# Inicialização da SparkSession
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.appName("TransactionFlowAnalysis").getOrCreate()
+
+# Carregar os dados de transação do Azure Data Lake ou outra fonte
+transactions_df = spark.read.parquet("/mnt/databricks/processed_data/transactions.parquet")
+
+# Agregar por data
+date_aggregated = transactions_df.groupBy("transaction_date").agg(
+    F.sum("transaction_value").alias("total_value"),
+    F.count("transaction_id").alias("number_of_transactions")
+).sort("transaction_date")
+
+# Converter para Pandas para visualização
+date_aggregated_pandas = date_aggregated.toPandas()
+
+# Plotar o valor total das transações ao longo do tempo
+plt.figure(figsize=(14, 7))
+plt.plot(date_aggregated_pandas["transaction_date"], date_aggregated_pandas["total_value"], label="Valor Total", color="blue")
+plt.title("Valor Total das Transações ao Longo do Tempo")
+plt.xlabel("Data")
+plt.ylabel("Valor Total")
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# Plotar o número de transações ao longo do tempo
+plt.figure(figsize=(14, 7))
+plt.plot(date_aggregated_pandas["transaction_date"], date_aggregated_pandas["number_of_transactions"], label="Número de Transações", color="green")
+plt.title("Número de Transações ao Longo do Tempo")
+plt.xlabel("Data")
+plt.ylabel("Número de Transações")
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()

@@ -1,0 +1,11 @@
+user_id,name,account_balance,account_type
+101,Alice,1500.00,savings
+102,Bob,1200.00,checking
+103,Charlie,1800.00,savings
+104,Emerson,1100.00,checking
+105,Eva,1350.00,savings
+106,Frank,1600.00,checking
+107,Grace,1700.00,savings
+108,Henry,1400.00,checking
+109,Ivy,1550.00,savings
+110,Jack,1650.00,checking

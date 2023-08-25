@@ -1,0 +1,11 @@
+transaction_id,account_id,transaction_type,amount
+2001,501,deposit,500.00
+2002,502,withdrawal,200.00
+2003,503,deposit,1000.00
+2004,504,withdrawal,50.00
+2005,505,deposit,750.00
+2006,506,withdrawal,300.00
+2007,507,deposit,650.00
+2008,508,withdrawal,100.00
+2009,509,deposit,450.00
+2010,510,withdrawal,250.00

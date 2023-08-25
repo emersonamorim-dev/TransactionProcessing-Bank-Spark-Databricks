@@ -1,0 +1,11 @@
+transaction_id,account_id,transaction_type,amount,transaction_date,transaction_status
+2001,501,deposit,500.00,2023-08-01,completed
+2002,502,withdrawal,200.00,2023-08-01,completed
+2003,503,deposit,1000.00,2023-08-02,completed
+2004,504,withdrawal,50.00,2023-08-02,pending
+2005,505,deposit,750.00,2023-08-03,completed
+2006,506,withdrawal,300.00,2023-08-03,completed
+2007,507,deposit,650.00,2023-08-04,completed
+2008,508,withdrawal,100.00,2023-08-04,pending
+2009,509,deposit,450.00,2023-08-05,completed
+2010,510,withdrawal,250.00,2023-08-05,completed

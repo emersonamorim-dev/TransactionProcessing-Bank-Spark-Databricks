@@ -1,0 +1,43 @@
+import pyspark.sql.functions as F
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Inicialização da SparkSession
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.appName("UserEDA").getOrCreate()
+
+# Carregar os dados de usuário do Azure Data Lake ou outra fonte
+users_df = spark.read.parquet("/mnt/databricks/processed_data/users.parquet")
+
+# Mostrar as primeiras linhas para ter uma visão geral dos dados
+users_df.show()
+
+# Descrição estatística das colunas numéricas
+users_df.describe().show()
+
+# Histograma da idade dos usuários
+user_ages = users_df.select("age").collect()
+plt.hist(user_ages, bins=30)
+plt.title("Distribuição da Idade dos Usuários")
+plt.xlabel("Idade")
+plt.ylabel("Número de Usuários")
+plt.show()
+
+# Contagem de usuários por gênero
+gender_counts = users_df.groupBy("gender").count().toPandas()
+
+plt.bar(gender_counts["gender"], gender_counts["count"])
+plt.title("Distribuição de Gênero")
+plt.xlabel("Gênero")
+plt.ylabel("Número de Usuários")
+plt.show()
+
+
+# Supondo que haja uma coluna 'last_login_date' para rastrear a atividade do usuário
+activity_aggregated = users_df.groupBy("last_login_date").count().sort("last_login_date").toPandas()
+
+plt.plot(activity_aggregated["last_login_date"], activity_aggregated["count"])
+plt.title("Atividade dos Usuários ao Longo do Tempo")
+plt.xlabel("Data")
+plt.ylabel("Número de Logins")
+plt.show()

@@ -1,0 +1,21 @@
+from pyspark.sql import DataFrame
+from pyspark.sql.functions import col, when
+
+# Função para remover valores nulos ou substituir por um valor padrão
+def handle_nulls(df: DataFrame, columns: list, default_values=None) -> DataFrame:
+    for i, column_name in enumerate(columns):
+        if default_values:
+            df = df.withColumn(column_name, when(col(column_name).isNull(), default_values[i]).otherwise(col(column_name)))
+        else:
+            df = df.filter(col(column_name).isNotNull())
+    return df
+
+# Função para remover duplicatas com base em colunas específicas
+def remove_duplicates(df: DataFrame, columns: list) -> DataFrame:
+    return df.dropDuplicates(columns)
+
+# Função para normalizar strings (por exemplo, para lowercase)
+def normalize_strings(df: DataFrame, columns: list) -> DataFrame:
+    for column_name in columns:
+        df = df.withColumn(column_name, col(column_name).lower())
+    return df

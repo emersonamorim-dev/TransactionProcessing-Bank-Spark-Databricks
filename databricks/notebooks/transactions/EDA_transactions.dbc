@@ -1,0 +1,38 @@
+import pyspark.sql.functions as F
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+## Carregamento dos Dados
+# Carregar os dados de transação do Azure Data Lake ou outra fonte
+transactions_df = spark.read.parquet("/mnt/databricks/processed_data/transactions.parquet")
+
+# Mostrar as primeiras linhas para ter uma visão geral dos dados
+transactions_df.show()
+
+# Descrição estatística das colunas numéricas
+transactions_df.describe().show()
+
+# Histograma do valor das transações
+transaction_values = transactions_df.select("transaction_value").collect()
+plt.hist(transaction_values, bins=50)
+plt.title("Distribuição do Valor das Transações")
+plt.xlabel("Valor")
+plt.ylabel("Número de Transações")
+plt.show()
+
+# Agregar por data e plotar
+date_aggregated = transactions_df.groupBy("transaction_date").agg(F.sum("transaction_value").alias("total_value")).sort("transaction_date")
+date_aggregated_pandas = date_aggregated.toPandas()
+
+plt.plot(date_aggregated_pandas["transaction_date"], date_aggregated_pandas["total_value"])
+plt.title("Transações ao Longo do Tempo")
+plt.xlabel("Data")
+plt.ylabel("Valor Total")
+plt.show()
+
+# Supondo que haja uma coluna 'product_id' ou 'product_name'
+top_products = transactions_df.groupBy("product_name").agg(F.count("transaction_id").alias("number_of_transactions")).sort(F.desc("number_of_transactions")).limit(10)
+top_products.show()
+
+
+
