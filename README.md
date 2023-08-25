@@ -14,7 +14,7 @@ echo "- É o sistema de arquivos distribuído do Hadoop." >>
 
 
 ## Para fazer a aplicação rodar, você precisa dos seguintes pacotes e ferramentas:
-- Linguagem:
+- Linguagens:
 - Python, Shell, HCL e Dockerfile
 
 - Flask: O framework web usado para criar a API.
